@@ -1,6 +1,6 @@
-const chapterListService = require('../services/chapterListService');
+import chapterListService from '../services/chapterListService.js';
 
-exports.getChapterList = async (req, res) => {
+export const getChapterList = async (req, res) => {
   try {
     const { bookKey } = req.params;
     const result = await chapterListService.getChapterList(bookKey);
@@ -9,3 +9,5 @@ exports.getChapterList = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export default { getChapterList };

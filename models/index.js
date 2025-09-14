@@ -1,5 +1,12 @@
-const { Sequelize } = require('sequelize');
-require('dotenv').config();
+import { Sequelize } from 'sequelize';
+import dotenv from 'dotenv';
+dotenv.config();
+
+import BookInit from './book.js';
+import BookDetailInit from './bookDetail.js';
+import ChapterInit from './chapter.js';
+import ChapterImageInit from './chapterImage.js';
+import GenreInit from './genre.js';
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -12,21 +19,14 @@ const sequelize = new Sequelize(
   }
 );
 
-const Book = require('./book')(sequelize);
-const BookDetail = require('./bookDetail')(sequelize);
-const Chapter = require('./chapter')(sequelize);
-const ChapterImage = require('./chapterImage')(sequelize);
-const Genre = require('./genre')(sequelize);
+const Book = BookInit(sequelize);
+const BookDetail = BookDetailInit(sequelize);
+const Chapter = ChapterInit(sequelize);
+const ChapterImage = ChapterImageInit(sequelize);
+const Genre = GenreInit(sequelize);
 
 // Associations
 Book.hasOne(BookDetail, { foreignKey: 'bookKey', sourceKey: 'bookKey', as: 'bookDetail' });
 BookDetail.belongsTo(Book, { foreignKey: 'bookKey', targetKey: 'bookKey', as: 'book' });
 
-module.exports = {
-  sequelize,
-  Book,
-  BookDetail,
-  Chapter,
-  ChapterImage,
-  Genre
-};
+export { sequelize, Book, BookDetail, Chapter, ChapterImage, Genre };

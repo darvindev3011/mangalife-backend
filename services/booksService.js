@@ -1,7 +1,7 @@
-const { Book, BookDetail } = require("../models");
-const { Op } = require("sequelize");
+import { Book, BookDetail } from "../models/index.js";
+import { Op } from "sequelize";
 
-exports.getBooks = async ({ page, limit, genre }) => {
+const getBooks = async ({ page, limit, genre }) => {
   // add where clause for active books only
   const where = {};
   if (genre) {
@@ -26,7 +26,7 @@ exports.getBooks = async ({ page, limit, genre }) => {
   });
 };
 
-exports.searchBooks = async (query) => {
+const searchBooks = async (query) => {
   return await BookDetail.findAll({
     attributes: ['bookKey', 'title', 'author', 'bannerUrl'],
     where: {
@@ -36,3 +36,5 @@ exports.searchBooks = async (query) => {
     order: [["title", "ASC"]],
   });
 };
+
+export default { getBooks, searchBooks };

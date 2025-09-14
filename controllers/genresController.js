@@ -1,6 +1,6 @@
-const genresService = require('../services/genresService');
+import genresService from '../services/genresService.js';
 
-exports.getGenres = async (req, res) => {
+export const getGenres = async (req, res) => {
   try {
     const genres = await genresService.getGenres();
     res.status(200).json({ success: true, data: genres });
@@ -8,3 +8,5 @@ exports.getGenres = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export default { getGenres };

@@ -1,6 +1,6 @@
-const bookDetailsService = require('../services/bookDetailsService');
+import bookDetailsService from '../services/bookDetailsService.js';
 
-exports.getBookDetails = async (req, res) => {
+export const getBookDetails = async (req, res) => {
   try {
     const { bookKey } = req.params;
     const result = await bookDetailsService.getBookDetails(bookKey);
@@ -9,3 +9,5 @@ exports.getBookDetails = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export default { getBookDetails };

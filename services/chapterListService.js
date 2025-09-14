@@ -1,8 +1,10 @@
-const { Chapter } = require("../models");
+import { Chapter } from "../models/index.js";
 
-exports.getChapterList = async (bookKey) => {
+const getChapterList = async (bookKey) => {
   return await Chapter.findAll({
     where: { bookKey },
     order: [["chapterNo", "DESC"]],
   });
 };
+
+export default { getChapterList };

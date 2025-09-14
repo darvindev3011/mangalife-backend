@@ -1,8 +1,8 @@
-const { Chapter, ChapterImage } = require("../models");
-const { Op, or } = require("sequelize");
-const { sequelize } = require("../models");
+import { Chapter, ChapterImage } from "../models/index.js";
+import { Op, or } from "sequelize";
+import { sequelize } from "../models/index.js";
 
-exports.getChapterDetails = async (bookKey, chapterNo) => {
+const getChapterDetails = async (bookKey, chapterNo) => {
   try {
     const chapter = await Chapter.findOne({ where: { bookKey, chapterNo } });
     const images = await ChapterImage.findAll({
@@ -39,3 +39,5 @@ exports.getChapterDetails = async (bookKey, chapterNo) => {
     throw error;
   }
 };
+
+export default { getChapterDetails };

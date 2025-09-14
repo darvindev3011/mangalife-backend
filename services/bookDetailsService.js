@@ -1,5 +1,7 @@
-const { BookDetail } = require('../models');
+import { BookDetail } from '../models/index.js';
 
-exports.getBookDetails = async (bookKey) => {
+const getBookDetails = async (bookKey) => {
   return await BookDetail.findOne({ where: { bookKey } });
 };
+
+export default { getBookDetails };

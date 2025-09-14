@@ -1,6 +1,6 @@
-const booksService = require('../services/booksService');
+import booksService from '../services/booksService.js';
 
-exports.getBooks = async (req, res) => {
+export const getBooks = async (req, res) => {
   try {
     // Pagination for infinite scroll
     const { page = 1, limit = 20, genre } = req.query;
@@ -11,7 +11,7 @@ exports.getBooks = async (req, res) => {
   }
 };
 
-exports.searchBooks = async (req, res) => {
+export const searchBooks = async (req, res) => {
   try {
     const { q } = req.query;
     if (!q) {
@@ -23,3 +23,5 @@ exports.searchBooks = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export default { getBooks, searchBooks };

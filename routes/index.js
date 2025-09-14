@@ -1,14 +1,12 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
+import booksController from '../controllers/booksController.js';
+import bookDetailsController from '../controllers/bookDetailsController.js';
+import chapterListController from '../controllers/chapterListController.js';
+import chapterDetailsController from '../controllers/chapterDetailsController.js';
+import genresController from '../controllers/genresController.js';
 
-const booksController = require('../controllers/booksController');
-const bookDetailsController = require('../controllers/bookDetailsController');
-const chapterListController = require('../controllers/chapterListController');
-const chapterDetailsController = require('../controllers/chapterDetailsController');
-const genresController = require('../controllers/genresController');
-const { login, register, profile, updateProfile, uploadAvatar } = require("../controllers/userController");
-const authMiddleware = require("../middlewares/authMiddleware");
-const upload = require("../middlewares/uploadMiddleware");
+
+const router = express.Router();
 
 // Directly map endpoints to controllers
 router.get('/books', booksController.getBooks); // GET /api/books
@@ -18,11 +16,5 @@ router.get('/book/:bookKey/chapters', chapterListController.getChapterList); // 
 router.get('/book/:bookKey/chapters/:chapterNo', chapterDetailsController.getChapterDetails); // GET /api/book/:bookKey/chapters/:chapterNo
 router.get('/genres', genresController.getGenres);
 
-// Auth-related routes
-router.post("/login", login);
-router.post("/register", register);
-router.get("/profile", authMiddleware, profile);
-router.put("/profile", authMiddleware, updateProfile);
-router.post("/upload-avatar", upload.single("avatar"), uploadAvatar);
 
-module.exports = router;
+export default router;

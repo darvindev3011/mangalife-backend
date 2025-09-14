@@ -1,11 +1,11 @@
-
-require('dotenv').config();
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const { sequelize } = require('./models');
-const apiRoutes = require('./routes/index');
-const proxyImageRouter = require('./routes/image-proxy');
+import dotenv from 'dotenv';
+dotenv.config();
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import { sequelize } from './models/index.js';
+import apiRoutes from './routes/index.js';
+import proxyImageRouter from './routes/image-proxy.js';
 
 const app = express();
 // Enable CORS
@@ -27,7 +27,6 @@ app.get('/', (req, res) => {
 // proxy-image route
 // This route is used to proxy images from external sources
 app.use("/proxy-image", proxyImageRouter);
-
 
 // Start server after DB connection
 sequelize.authenticate()

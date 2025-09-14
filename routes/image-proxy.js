@@ -1,6 +1,5 @@
-const express = require('express');
-// const { URL } = require('url');
-const { Readable } = require('stream');
+import express from 'express';
+import { Readable } from 'stream';
 
 const router = express.Router();
 
@@ -103,4 +102,4 @@ router.get('/', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
