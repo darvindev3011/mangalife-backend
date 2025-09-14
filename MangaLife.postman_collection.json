@@ -1,0 +1,67 @@
+{
+  "info": {
+    "name": "MangaLife API",
+    "description": "Postman collection for MangaLife backend API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Books (Infinite Scroll)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/books?page=1&limit=20",
+          "host": ["{{base_url}}"],
+          "path": ["api", "books"],
+          "query": [
+            {"key": "page", "value": "1"},
+            {"key": "limit", "value": "20"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Book Details",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/books/:bookKey",
+          "host": ["{{base_url}}"],
+          "path": ["api", "books", ":bookKey"]
+        }
+      }
+    },
+    {
+      "name": "Get Chapter List",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/books/:bookKey/chapters",
+          "host": ["{{base_url}}"],
+          "path": ["api", "books", ":bookKey", "chapters"]
+        }
+      }
+    },
+    {
+      "name": "Get Chapter Details",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/books/:bookKey/chapters/:chapterNo",
+          "host": ["{{base_url}}"],
+          "path": ["api", "books", ":bookKey", "chapters", ":chapterNo"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000"
+    }
+  ]
+}
