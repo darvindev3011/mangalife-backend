@@ -1,7 +1,7 @@
-import multer, { StorageEngine } from 'multer';
+import multer from 'multer';
 import path from 'path';
 
-const storage: StorageEngine = multer.diskStorage({
+const storage = multer.diskStorage({
   destination: function (_req, _file, cb) {
     cb(null, 'uploads/'); // Make sure this folder exists
   },

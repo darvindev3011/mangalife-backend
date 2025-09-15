@@ -7,6 +7,7 @@ import BookDetailInit from './bookDetail.js';
 import ChapterInit from './chapter.js';
 import ChapterImageInit from './chapterImage.js';
 import GenreInit from './genre.js';
+import UserInit from './user.js';
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -24,9 +25,10 @@ const BookDetail = BookDetailInit(sequelize);
 const Chapter = ChapterInit(sequelize);
 const ChapterImage = ChapterImageInit(sequelize);
 const Genre = GenreInit(sequelize);
+const User = UserInit(sequelize);
 
 // Associations
 Book.hasOne(BookDetail, { foreignKey: 'bookKey', sourceKey: 'bookKey', as: 'bookDetail' });
 BookDetail.belongsTo(Book, { foreignKey: 'bookKey', targetKey: 'bookKey', as: 'book' });
 
-export { sequelize, Book, BookDetail, Chapter, ChapterImage, Genre };
+export { sequelize, Book, BookDetail, Chapter, ChapterImage, Genre, User };
