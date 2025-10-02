@@ -10,7 +10,6 @@ const getChapterDetails = async (bookKey, chapterNo) => {
       order: [["id", "ASC"]],
     });
 
-
     const prevChapter = await Chapter.findOne({
       where: {
         bookKey,
@@ -29,14 +28,16 @@ const getChapterDetails = async (bookKey, chapterNo) => {
 
     const frontUrl = process.env.FRONTEND_URL || "http://localhost:3000";
     return {
-      chapter,
-      images,
-      prevChapterUrl: prevChapter ? `${frontUrl}/manga/${prevChapter.bookKey}/chapter/${prevChapter.chapterNo}` : null,
-      nextChapterUrl: nextChapter ? `${frontUrl}/manga/${nextChapter.bookKey}/chapter/${nextChapter.chapterNo}` : null,
+      success: true,
+      data: {
+        chapter,
+        images,
+        prevChapterUrl: prevChapter ? `${frontUrl}/manga/${prevChapter.bookKey}/chapter/${prevChapter.chapterNo}` : null,
+        nextChapterUrl: nextChapter ? `${frontUrl}/manga/${nextChapter.bookKey}/chapter/${nextChapter.chapterNo}` : null,
+      }
     };
   } catch (error) {
-    console.error("Error fetching chapter details:", error);
-    throw error;
+    return { success: false, error };
   }
 };
 

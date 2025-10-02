@@ -1,18 +1,28 @@
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
+
+const uploadDir = path.join(process.cwd(), 'uploads');
+fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({
-  destination: function (_req, _file, cb) {
-    cb(null, 'uploads/'); // Make sure this folder exists
-  },
-  filename: function (_req, file, cb) {
-    // Use original filename with a timestamp to avoid collisions
+  destination: (_, __, cb) => cb(null, uploadDir),
+  filename: (_, file, cb) => {
+    const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
     const ext = path.extname(file.originalname);
-    const base = path.basename(file.originalname, ext);
-    cb(null, `${base}_${Date.now()}${ext}`);
+    cb(null, unique + ext);
   }
 });
 
-const upload = multer({ storage });
+const fileFilter = (_req, file, cb) => {
+  if (!/^image\//.test(file.mimetype)) return cb(new Error('Only image files allowed'));
+  cb(null, true);
+};
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter
+});
 
 export default upload;

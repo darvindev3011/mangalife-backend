@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import User from "../models/user.js";
+import { User } from "../models/index.js";
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
@@ -8,6 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
 const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
+  console.log('token:', token);
   if (!token) {
     return res.status(401).json({ error: "No token provided" });
   }

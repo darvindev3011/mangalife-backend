@@ -1,12 +1,13 @@
 import chapterListService from '../services/chapterListService.js';
+import { sendResponse } from '../utils/response.js';
 
 export const getChapterList = async (req, res) => {
-  try {
-    const { bookKey } = req.params;
-    const result = await chapterListService.getChapterList(bookKey);
-    res.status(200).json({ success: true, data: result });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+  const { bookKey } = req.params;
+  const result = await chapterListService.getChapterList(bookKey);
+  if (result.success) {
+    sendResponse(res, { status: 200, message: 'Chapter list fetched', data: result.data });
+  } else {
+    sendResponse(res, { status: 500, message: 'Failed to fetch chapter list', error: result.error });
   }
 };
 

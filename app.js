@@ -10,7 +10,17 @@ import proxyImageRouter from './routes/image-proxy.js';
 const app = express();
 // Enable CORS
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: (origin, callback) => {
+    const allowedOrigins = process.env.FRONTEND_URLS
+      ? process.env.FRONTEND_URLS.split(',').map(url => url.trim())
+      : [];
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 

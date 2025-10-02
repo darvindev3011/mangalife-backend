@@ -5,6 +5,7 @@ import chapterListController from '../controllers/chapterListController.js';
 import chapterDetailsController from '../controllers/chapterDetailsController.js';
 import genresController from '../controllers/genresController.js';
 import { login, register, profile, updateProfile, uploadAvatar } from '../controllers/authController.js';
+import commentsRouter from './comments.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 import upload from "../utils/multer.js";
 
@@ -23,7 +24,10 @@ router.post("/login", login);
 router.post("/register", register);
 router.get("/profile", authMiddleware, profile);
 router.put("/profile", authMiddleware, updateProfile);
-router.post("/upload-avatar", upload.single("avatar"), uploadAvatar);
+router.post('/upload-avatar', authMiddleware, upload.single('avatar'), uploadAvatar);
 
 
 export default router;
+
+// Comments API
+router.use('/comments', commentsRouter);
