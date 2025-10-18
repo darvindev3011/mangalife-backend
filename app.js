@@ -6,6 +6,12 @@ import cors from 'cors';
 import { sequelize } from './models/index.js';
 import apiRoutes from './routes/index.js';
 import proxyImageRouter from './routes/image-proxy.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 // Enable CORS
@@ -25,6 +31,8 @@ app.use(cors({
 }));
 
 app.use(bodyParser.json());
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // API route
 app.use('/api', apiRoutes);

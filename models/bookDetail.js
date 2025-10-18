@@ -20,6 +20,16 @@ export default function(sequelize) {
     genres: DataTypes.STRING,
     summary: DataTypes.TEXT,
     tags: DataTypes.STRING,
+    status: DataTypes.INTEGER, // 1: ongoing, 2: completed, 3: onhold, 4: cancelled, 5: upcoming
+    rating: {
+      type: DataTypes.DECIMAL(3, 2),
+      allowNull: true,
+      validate: {
+        min: 0,
+        max: 10
+      }
+    },
+    latestChapter: DataTypes.STRING
   }, {
     timestamps: true,
     tableName: 'bookDetails',

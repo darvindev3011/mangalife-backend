@@ -72,6 +72,7 @@ export const profile = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+    user.profilePicture = user.profilePicture ? `${process.env.MEDIA_URL}/avatars/${user.profilePicture}` : null;
     res.json({ profile: user });
   } catch (error) {
     res.status(500).json({ error: error.message || "Profile fetch failed" });
@@ -80,7 +81,7 @@ export const profile = async (req, res) => {
 
 export const uploadAvatar = async (req, res) => {
   try {
-    const { id } = req.body;
+    const id  = req.user.id;
     if (!id || !req.file) {
       return res.status(400).json({ error: "User id and avatar file are required." });
     }
@@ -88,11 +89,11 @@ export const uploadAvatar = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "User not found." });
     }
-    user.profilePicture = `/uploads/${req.file.filename}`;
+    user.profilePicture = req.file.filename ? req.file.filename : null;
     await user.save();
     res.json({
       message: "Avatar uploaded successfully.",
-      profilePicture: user.profilePicture,
+      profilePicture: `${process.env.MEDIA_URL}/avatars/${user.profilePicture}`,
     });
   } catch (error) {
     res.status(500).json({ error: error.message || "Failed to upload avatar." });

@@ -11,6 +11,7 @@ export default function(sequelize) {
     bookKey: DataTypes.STRING,
     chapterNo: DataTypes.STRING,
     imageUrl: DataTypes.STRING,
+    imageName: DataTypes.STRING,
     isDownloaded: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,

@@ -1,28 +1,43 @@
 import multer from 'multer';
-import path from 'path';
+import { extname } from 'path';
 import fs from 'fs';
 
-const uploadDir = path.join(process.cwd(), 'uploads');
-fs.mkdirSync(uploadDir, { recursive: true });
-
-const storage = multer.diskStorage({
-  destination: (_, __, cb) => cb(null, uploadDir),
-  filename: (_, file, cb) => {
-    const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, unique + ext);
-  }
-});
-
-const fileFilter = (_req, file, cb) => {
-  if (!/^image\//.test(file.mimetype)) return cb(new Error('Only image files allowed'));
-  cb(null, true);
+// create stirage options for multer
+export const storageOptions = (dir = '', isMultiFilds) => {
+  return multer.diskStorage({
+    destination: (req, file, cb) => {
+      let uploadDir = null;
+      // this functionality for multiple file with different fields
+      if (isMultiFilds) {
+        uploadDir = `${dir}/${file.fieldname.replace('_', '')}`;
+      } else {
+        uploadDir = dir;
+      }
+      const fullPath = 'uploads/' + uploadDir;
+      // Ensure directory exists
+      fs.mkdirSync(fullPath, { recursive: true });
+      cb(null, fullPath);
+    },
+    filename: (req, file, cb) => {
+      const fileExt = extname(file.originalname);
+      const fileName = `${Date.now()}${fileExt}`;
+      cb(null, fileName);
+    },
+  });
 };
 
-const upload = multer({
-  storage,
-  limits: { fileSize: 5 * 1024 * 1024 },
-  fileFilter
-});
-
-export default upload;
+// include multer to API using useMulter
+export const useMulter = (dir, isMultiFilds = false) => {
+  return multer({ 
+    storage: storageOptions(dir, isMultiFilds),
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+    fileFilter: (req, file, cb) => {
+      // Accept only image files
+      if (file.mimetype.startsWith('image/')) {
+        cb(null, true);
+      } else {
+        cb(new Error('Only image files are allowed'), false);
+      }
+    }
+  });
+};

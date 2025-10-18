@@ -6,8 +6,10 @@ import chapterDetailsController from '../controllers/chapterDetailsController.js
 import genresController from '../controllers/genresController.js';
 import { login, register, profile, updateProfile, uploadAvatar } from '../controllers/authController.js';
 import commentsRouter from './comments.js';
+import bookmarksRouter from './bookmarks.js';
+import readingHistoryRouter from './readingHistory.js';
 import authMiddleware from '../middleware/authMiddleware.js';
-import upload from "../utils/multer.js";
+import { useMulter } from "../utils/multer.js";
 
 const router = express.Router();
 
@@ -24,10 +26,21 @@ router.post("/login", login);
 router.post("/register", register);
 router.get("/profile", authMiddleware, profile);
 router.put("/profile", authMiddleware, updateProfile);
-router.post('/upload-avatar', authMiddleware, upload.single('avatar'), uploadAvatar);
-
-
-export default router;
+// Avatar upload with proper middleware chain
+router.post('/upload-avatar',
+    authMiddleware,
+    useMulter('avatars').single('profilePicture'),
+    uploadAvatar
+);
 
 // Comments API
 router.use('/comments', commentsRouter);
+
+// Bookmarks API
+router.use('/bookmarks', bookmarksRouter);
+
+// Reading History API
+router.use('/history', readingHistoryRouter);
+
+export default router;
+
